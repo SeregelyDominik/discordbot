@@ -1,29 +1,32 @@
 import os
 import yt_dlp
 
+
 class MusicDownload:
     def download_audio(self, url, folder_name=None):
+        """Mp3 fájl letöltése YT-ról"""
+        # mappa-check
         if folder_name:
-            # Create a subfolder inside 'music/' with the given folder name
+
             folder_path = os.path.join('music', folder_name)
             if not os.path.exists(folder_path):
-                os.makedirs(folder_path)  # Create the folder if it doesn't exist
+                os.makedirs(folder_path)  # mappa létrehozása, ha nem létezett
         else:
-            # Default to 'music/' if no folder name is given
+            # default érték
             folder_path = 'music'
 
         mp3_path_holder = {}
 
+        # segédfüggvény fájl útvonal követéshez
         def hook(d):
             if d['status'] == 'finished':
-                # yt_dlp gives us a temp file path, we'll replace its extension with .mp3
+                # webm helyett mp3
                 base, _ = os.path.splitext(d['filename'])
                 mp3_path_holder['path'] = base + '.mp3'
 
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': os.path.join(folder_path, '%(title)s.%(ext)s'),
-            'ffmpeg_location': r'C:\Program Files\FFMPEG\ffmpeg-7.1.1-essentials_build\bin',  # Set this if ffmpeg isn't in PATH
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
@@ -44,6 +47,7 @@ class MusicDownload:
             return None
 
     def download_video(self, url):
+        """Mp4 fájl letöltése Yt-ról"""
         if not os.path.exists('videos'):
             os.makedirs('videos')
 
@@ -56,9 +60,8 @@ class MusicDownload:
 
         # Force MP4 format by specifying 'mp4' in the format option
         ydl_opts = {
-            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4',  # Explicitly prefer MP4 for video and audio
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4',
             'outtmpl': 'videos/%(title)s.%(ext)s',
-            'ffmpeg_location': r'C:\Program Files\FFMPEG\ffmpeg-7.1.1-essentials_build\bin',
             'quiet': True,
             'no_warnings': True,
             'progress_hooks': [hook],

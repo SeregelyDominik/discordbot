@@ -1,25 +1,25 @@
 from pydub import AudioSegment
 
-class RingtoneException(Exception):
-    pass
 
 class RingtoneMaker:
 
     def make_ringtone(self, inputfile, outputfile, start=0, end=30):
-        # Load the MP3 file
+        """Mp3 fájl megvágása"""
+
+        # mp3 betöltése
         audio = AudioSegment.from_mp3(inputfile)
-        seconds = len(audio)//1000 #hossz masodpercben
-        if (seconds-start) < end:
-            raise RingtoneException()
+        seconds = len(audio)//1000  # hossz masodpercben
 
-        # Define start and end time in milliseconds
+        # kis hibakezelés
+        if start < 0 or end < 0 or start > end or end > seconds:
+            raise ValueError
+
+        # idők
         start_time = start * 1000
-        end_time =  end * 1000
+        end_time = end * 1000
 
-        # Cut the audio segment
+        # vágás
         cut_audio = audio[start_time:end_time]
-        # Export the cut audio
-        cut_audio.export(outputfile, format="mp3")
 
-#ringtone = RingtoneMaker()
-#ringtone.make_ringtone("input.mp3", 191, 1)
+        # mentés
+        cut_audio.export(outputfile, format="mp3")

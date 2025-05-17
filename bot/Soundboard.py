@@ -2,13 +2,16 @@ import discord
 import os
 from discord.ui import Button, View
 
+
 class SoundboardView(View):
     def __init__(self, sound_files, vc_getter):
         super().__init__(timeout=None)
         self.sound_files = sound_files
         self.vc_getter = vc_getter
         for label, filename in sound_files.items():
-            self.add_item(SoundButton(label=label, file=filename, vc_getter=self.vc_getter))
+            self.add_item(SoundButton(label=label,
+                                      file=filename, vc_getter=self.vc_getter))
+
 
 class SoundButton(Button):
     def __init__(self, label, file, vc_getter):
@@ -19,7 +22,8 @@ class SoundButton(Button):
     async def callback(self, interaction: discord.Interaction):
         vc = self.vc_getter(interaction.guild)
         if not vc or not vc.is_connected():
-            await interaction.response.send_message("❌ Not connected to a voice channel.", ephemeral=True)
+            await interaction.response.send_message(
+                "❌ Not connected to a voice channel.", ephemeral=True)
             return
 
         if vc.is_playing():
@@ -27,7 +31,9 @@ class SoundButton(Button):
 
         filepath = os.path.join("sounds", self.file)
         vc.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filepath))
-        await interaction.response.send_message(f"🔊 Playing: {self.file}", ephemeral=True)
+        await interaction.response.send_message(
+            f"🔊 Playing: {self.file}", ephemeral=True)
+
 
 class Soundboard:
     def __init__(self, bot, sound_dir="sounds"):
