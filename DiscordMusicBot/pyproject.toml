@@ -5,15 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "discord-music-bot"
 version = "0.1.0"
-description = "A Discord bot for playing and managing music."
+description = "Zenei discord bot."
 authors = [
-    { name = "Your Name", email = "you@example.com" }
+    { name = "Seregély Dominik", email = "seregelydominik@gmail.com" }
 ]
 readme = "README.md"
-license = { file = "LICENSE" }
 requires-python = ">=3.8"
 
-# Add dependencies your bot uses here
 dependencies = [
     "discord.py",
     "youtube_dl",
@@ -23,8 +21,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/discord-music-bot"
-Repository = "https://github.com/yourusername/discord-music-bot"
+Repository = "https://github.com/SeregelyDominik/discordbot"
 
 [tool.setuptools.packages.find]
 where = ["."]
