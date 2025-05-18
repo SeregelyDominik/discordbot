@@ -58,7 +58,6 @@ class MusicDownload:
                 base, _ = os.path.splitext(d['filename'])
                 mp4_path_holder['path'] = base + '.mp4'
 
-        # Force MP4 format by specifying 'mp4' in the format option
         ydl_opts = {
             'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4',
             'outtmpl': 'videos/%(title)s.%(ext)s',
